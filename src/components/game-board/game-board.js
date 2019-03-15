@@ -3,6 +3,7 @@ import './game-board.css';
 import Util from '../../util/util';
 import GameNumber from '../number/game-number';
 import StarsDisplay from '../stars-display/stars-display';
+import PlayAgain from '../play-again/play-again';
 
 const GameBoard = () => {
     const [stars, setStars] = useState(Util.random(1, 9));
@@ -10,6 +11,13 @@ const GameBoard = () => {
     const [candidateNums, setCandidateNums] = useState([]);
 
     const candidatesAreWrong = Util.sum(candidateNums) > stars;
+    const gameIsDone = availableNums.length === 0;
+
+    const resetGame = () => {
+        setStars(Util.random(1, 9));
+        setAvailableNums(Util.range(1, 9));
+        setCandidateNums([]);
+    }
 
     const numberStatus = (number) => {
         if(!availableNums.includes(number)) {
@@ -50,7 +58,9 @@ const GameBoard = () => {
             </div>
             <div className="body">
                 <div className="left">
-                    <StarsDisplay count={ stars}/>
+                {
+                    gameIsDone ? <PlayAgain onClick={resetGame}/> : <StarsDisplay count={ stars}/>
+                }
                 </div>
                 <div className="right">
                     {

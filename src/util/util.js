@@ -1,25 +1,25 @@
-const Util = {
-    sum: arr => arr.reduce((acc, curr) => acc + curr, 0),
+class Util {
+    static sum = (arrayToSum) => arrayToSum.reduce((acc, curr) => acc + curr, 0);
 
-    range: (min, max) => Array.from({ length: max - min + 1 }, (_, i) => min + i),
+    static range = (min, max) => Array.from({ length: max - min + 1 }, (_, i) => min + i);
 
-    random: (min, max) => min + Math.floor(max * Math.random()),
+    static random = (min, max) => min + Math.floor(max * Math.random());
 
-    randomSumIn: (arr, max) => {
+    static randomSumIn = (arr, max) => {
         const sets = [[]];
         const sums = [];
         for (let i = 0; i < arr.length; i++) {
             for (let j = 0, len = sets.length; j < len; j++) {
-            const candidateSet = sets[j].concat(arr[i]);
-            const candidateSum = Util.sum(candidateSet);
-            if (candidateSum <= max) {
-                sets.push(candidateSet);
-                sums.push(candidateSum);
-            }
+                const candidateSet = sets[j].concat(arr[i]);
+                const candidateSum = this.sum(candidateSet);
+                if (candidateSum <= max) {
+                    sets.push(candidateSet);
+                    sums.push(candidateSum);
+                }
             }
         }
-        return sums[Util.random(0, sums.length)];
-    },
+        return sums[this.random(0, sums.length)];
+    };
 }
 
 export default Util;
