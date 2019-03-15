@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './game-board.css';
 import Util from '../../util/util';
 import GameNumber from '../number/game-number';
@@ -9,9 +9,20 @@ const GameBoard = () => {
     const [stars, setStars] = useState(Util.random(1, 9));
     const [availableNums, setAvailableNums] = useState(Util.range(1, 9));
     const [candidateNums, setCandidateNums] = useState([]);
+    const [secondsLeft, setSecondsLeft] = useState(10);
+
+    useEffect(() => {
+        if(secondsLeft > 0 && availableNums.length > 0) {
+            const timerId = setTimeout(() => {
+                setSecondsLeft(secondsLeft - 1);
+            }, 1000);
+            return () => clearTimeout(timerId);
+        }
+    });
 
     const candidatesAreWrong = Util.sum(candidateNums) > stars;
-    const gameIsDone = availableNums.length === 0;
+    const gameStatus = availableNums.length === 0 ? 'won' :
+        secondsLeft === 0 ? 'lost' : 'active';
 
     const resetGame = () => {
         setStars(Util.random(1, 9));
@@ -31,7 +42,7 @@ const GameBoard = () => {
     };
 
     const onNumberClick = (number, currentStatus) => {
-        if(currentStatus === 'used') {
+        if(gameStatus !== 'active' || currentStatus === 'used') {
             return;
         }
 
@@ -59,7 +70,8 @@ const GameBoard = () => {
             <div className="body">
                 <div className="left">
                 {
-                    gameIsDone ? <PlayAgain onClick={resetGame}/> : <StarsDisplay count={ stars}/>
+                    gameStatus !== 'active' ? 
+                        <PlayAgain onClick={resetGame} gameStatus={gameStatus}/> : <StarsDisplay count={ stars}/>
                 }
                 </div>
                 <div className="right">
@@ -75,7 +87,7 @@ const GameBoard = () => {
                     }
                 </div>
             </div>
-            <div className="timer">Time Remaining: 10</div>
+            <div className="timer">Time Remaining: {secondsLeft}</div>
         </div>
     );
 }
