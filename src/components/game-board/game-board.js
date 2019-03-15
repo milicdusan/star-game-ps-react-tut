@@ -6,8 +6,8 @@ import StarsDisplay from '../stars-display/stars-display';
 
 const GameBoard = () => {
     const [stars, setStars] = useState(Util.random(1, 9));
-    const [availableNums, setAvailableNums] = useState([1, 2, 3, 4, 5]);
-    const [candidateNums, setCandidateNums] = useState([2, 3]);
+    const [availableNums, setAvailableNums] = useState(Util.range(1, 9));
+    const [candidateNums, setCandidateNums] = useState([]);
 
     const candidatesAreWrong = Util.sum(candidateNums) > stars;
 
@@ -21,6 +21,27 @@ const GameBoard = () => {
 
         return 'available';
     };
+
+    const onNumberClick = (number, currentStatus) => {
+        if(currentStatus === 'used') {
+            return;
+        }
+
+        const newCandidateNums = currentStatus === 'available' ? 
+            candidateNums.concat(number) : candidateNums.filter(cn => cn !== number);
+
+        if(Util.sum(newCandidateNums) !== stars) {
+            setCandidateNums(newCandidateNums);
+        } else {
+            const newAvailableNums = availableNums.filter(
+                n => !newCandidateNums.includes(n)
+            );
+
+            setStars(Util.randomSumIn(newAvailableNums, 9));
+            setAvailableNums(newAvailableNums);
+            setCandidateNums([]);
+        }
+    }
 
     return(
         <div className="game">
@@ -37,7 +58,10 @@ const GameBoard = () => {
                             <GameNumber 
                                 key={number}
                                 status={numberStatus(number)} 
-                                number={number}/>)
+                                number={number}
+                                onClick={onNumberClick}
+                            />
+                        )
                     }
                 </div>
             </div>

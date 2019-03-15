@@ -11,14 +11,14 @@ const Util = {
         for (let i = 0; i < arr.length; i++) {
             for (let j = 0, len = sets.length; j < len; j++) {
             const candidateSet = sets[j].concat(arr[i]);
-            const candidateSum = this.sum(candidateSet);
+            const candidateSum = Util.sum(candidateSet);
             if (candidateSum <= max) {
                 sets.push(candidateSet);
                 sums.push(candidateSum);
             }
             }
         }
-        return sums[this.random(0, sums.length)];
+        return sums[Util.random(0, sums.length)];
     },
 }
 
