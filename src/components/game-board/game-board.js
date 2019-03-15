@@ -5,7 +5,7 @@ import GameNumber from '../number/game-number';
 import StarsDisplay from '../stars-display/stars-display';
 import PlayAgain from '../play-again/play-again';
 
-const GameBoard = () => {
+const GameBoard = props => {
     const [stars, setStars] = useState(Util.random(1, 9));
     const [availableNums, setAvailableNums] = useState(Util.range(1, 9));
     const [candidateNums, setCandidateNums] = useState([]);
@@ -23,12 +23,6 @@ const GameBoard = () => {
     const candidatesAreWrong = Util.sum(candidateNums) > stars;
     const gameStatus = availableNums.length === 0 ? 'won' :
         secondsLeft === 0 ? 'lost' : 'active';
-
-    const resetGame = () => {
-        setStars(Util.random(1, 9));
-        setAvailableNums(Util.range(1, 9));
-        setCandidateNums([]);
-    }
 
     const numberStatus = (number) => {
         if(!availableNums.includes(number)) {
@@ -71,7 +65,7 @@ const GameBoard = () => {
                 <div className="left">
                 {
                     gameStatus !== 'active' ? 
-                        <PlayAgain onClick={resetGame} gameStatus={gameStatus}/> : <StarsDisplay count={ stars}/>
+                        <PlayAgain onClick={props.startNewGame} gameStatus={gameStatus}/> : <StarsDisplay count={ stars}/>
                 }
                 </div>
                 <div className="right">

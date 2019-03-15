@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-import GameBoard from './components/game-board/game-board';
+import StarMatch from './components/star-match/star-match';
 
 class App extends Component {
   render() {
     return (
-      <GameBoard/>
+      <StarMatch />
     );
   }
 }
