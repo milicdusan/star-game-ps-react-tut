@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import './game-board.css';
 import Util from '../../util/util';
+import GameNumber from '../number/game-number';
+import StarsDisplay from '../stars-display/stars-display';
 
 const GameBoard = () => {
     const [stars, setStars] = useState(Util.random(1, 9));
@@ -12,13 +14,11 @@ const GameBoard = () => {
             </div>
             <div className="body">
                 <div className="left">
-                    {
-                        Util.range(1, stars).map(starId => <div key={starId} className="star"></div>
-                    )}
+                    <StarsDisplay count={stars}/>
                 </div>
                 <div className="right">
                     {
-                        Util.range(1, 9).map(number => <button key={number} className="number">{number}</button>)
+                        Util.range(1, 9).map(number => <GameNumber key={number} number={number}/>)
                     }
                 </div>
             </div>
